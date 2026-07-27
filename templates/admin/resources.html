@@ -1,0 +1,87 @@
+{% extends "admin/layout.html" %}
+
+{% block admin_content %}
+<div class="space-y-6 max-w-7xl">
+  <!-- Header -->
+  <div>
+    <h1 class="text-3xl font-bold text-gray-900">Clinic Resources</h1>
+    <p class="text-sm text-gray-500">Manage medicine stock and bed availability</p>
+  </div>
+
+  <!-- Active Alerts -->
+  <div class="space-y-2">
+    {% for alert in alerts %}
+    <div class="p-4 rounded-xl border-l-4 shadow-sm flex items-start gap-3 {% if alert.severity == 'critical' %}border-l-red-500 bg-red-50 border-red-200{% else %}border-l-yellow-500 bg-yellow-50 border-yellow-200{% endif %}">
+      <svg class="w-5 h-5 mt-0.5 flex-shrink-0 {% if alert.severity == 'critical' %}text-red-600{% else %}text-yellow-600{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+      </svg>
+      <div class="flex-1">
+        <p class="font-medium text-sm text-gray-900">{{ alert.title }}</p>
+        <p class="text-xs text-gray-500">{{ alert.action }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Medicine Stock Table -->
+  <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-sm">
+    <h3 class="font-semibold text-gray-900 mb-4">Medicine Stock Inventory</h3>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left">
+        <thead class="border-b border-gray-200 text-gray-500 text-xs font-semibold uppercase bg-gray-50">
+          <tr>
+            <th class="py-3 px-4">Medicine</th>
+            <th class="py-3 px-4">Current Stock</th>
+            <th class="py-3 px-4">Min. Required</th>
+            <th class="py-3 px-4">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          {% for med in medicines %}
+          <tr class="hover:bg-gray-50">
+            <td class="py-3.5 px-4 font-medium text-gray-900">{{ med.name }}</td>
+            <td class="py-3.5 px-4 font-bold text-gray-900">{{ med.stock }}</td>
+            <td class="py-3.5 px-4 text-gray-600">{{ med.min }}</td>
+            <td class="py-3.5 px-4">
+              <span class="text-xs px-2.5 py-1 rounded-full font-semibold {% if med.status == 'Low' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+                {{ med.status }}
+              </span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Bed Availability Cards -->
+  <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-sm">
+    <h3 class="font-semibold text-gray-900 mb-4">Bed Availability</h3>
+    <div class="grid md:grid-cols-3 gap-4">
+      {% for bed in beds %}
+      <div class="p-4 border border-gray-200 rounded-xl bg-gray-50">
+        <p class="font-semibold text-sm text-gray-900 mb-3">{{ bed.location }}</p>
+        <div class="space-y-2 text-sm">
+          <div class="flex justify-between">
+            <span class="text-gray-500">Total Beds:</span>
+            <span class="font-semibold text-gray-900">{{ bed.total }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Available:</span>
+            <span class="font-bold text-teal-600">{{ bed.available }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Occupancy:</span>
+            <span class="font-semibold text-gray-900">{{ bed.percent }}%</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+            <div class="bg-gradient-to-r from-teal-500 to-blue-600 h-2.5 rounded-full" style="width: {{ bed.percent }}%;"></div>
+          </div>
+          <p class="text-xs text-gray-500 mt-2 font-medium">{{ bed.status }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

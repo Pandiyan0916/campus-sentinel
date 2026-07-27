@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Campus Sentinel | AI-Powered Campus Health Intelligence{% endblock %}</title>
+  
+  <!-- Tailwind CSS CDN for full styling fidelity -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  
+  <!-- Custom Design Tokens & Utility Overrides -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans antialiased min-h-screen flex flex-col">
+
+  <!-- Flash Notification Banners -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="fixed top-4 right-4 z-50 space-y-2">
+        {% for category, message in messages %}
+          <div class="px-4 py-3 rounded-lg shadow-lg text-sm text-white flex items-center justify-between gap-4 {% if category == 'success' %}bg-green-600{% elif category == 'danger' %}bg-red-600{% else %}bg-blue-600{% endif %}">
+            <span>{{ message }}</span>
+            <button onclick="this.parentElement.remove()" class="text-white hover:text-gray-200 font-bold">&times;</button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Main Body Content -->
+  {% block content %}{% endblock %}
+
+  <!-- Floating MedicBot Assistant -->
+  {% include 'components/chat_bot.html' %}
+
+  <!-- Application Script -->
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

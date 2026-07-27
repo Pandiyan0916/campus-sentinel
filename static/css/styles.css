@@ -1,0 +1,103 @@
+/*
+Campus Sentinel CSS Design System
+Matches original Next.js / Tailwind CSS tokens, color palettes, micro-animations,
+and dark mode styling.
+*/
+
+:root {
+  /* Medical-tech color palette: white, blue, teal accents */
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+
+  /* Primary blue for medical trust */
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+
+  /* Secondary teal accent */
+  --secondary: #0d9488;
+  --secondary-foreground: #ffffff;
+
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #0d9488;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e2e8f0;
+  --input: #f8fafc;
+  --ring: #2563eb;
+  
+  --radius: 0.625rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0f172a;
+  --sidebar-primary: #2563eb;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f1f5f9;
+  --sidebar-accent-foreground: #2563eb;
+  --sidebar-border: #e2e8f0;
+}
+
+/* Custom Animation Utility Classes */
+.transition-smooth {
+  transition: all 0.3s ease-out;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+.slide-in-up {
+  animation: slideInUp 0.5s ease-out;
+}
+
+.pulse-soft {
+  animation: pulseSoft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseSoft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Custom CSS Helpers */
+.bg-primary { background-color: var(--primary); }
+.text-primary { color: var(--primary); }
+.bg-secondary { background-color: var(--secondary); }
+.text-secondary { color: var(--secondary); }
+.border-border { border-color: var(--border); }
+.bg-background { background-color: var(--background); }
+.bg-card { background-color: var(--card); }
+.text-muted-foreground { color: var(--muted-foreground); }
+.bg-muted { background-color: var(--muted); }
+
+/* Symptom Button Selected State */
+.symptom-btn.active {
+  border-color: var(--primary) !important;
+  background-color: rgba(37, 99, 235, 0.1) !important;
+  color: var(--primary) !important;
+}
+
+/* CSS Progress & Bar Visualizer */
+.bar-progress {
+  transition: width 0.6s ease-in-out;
+}

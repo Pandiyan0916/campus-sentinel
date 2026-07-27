@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex h-screen bg-gray-50 overflow-hidden">
+  
+  <!-- Mobile Header -->
+  <div class="md:hidden fixed top-0 left-0 right-0 h-16 border-b border-gray-200 bg-white z-40 flex items-center px-4 justify-between">
+    <div class="flex items-center gap-3">
+      <button id="sidebar-toggle-btn" class="p-2 text-gray-600 hover:text-gray-900 rounded-lg">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+      <a href="{{ url_for('admin_dashboard') }}" class="flex items-center gap-2">
+        <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+        </svg>
+        <span class="text-sm font-semibold text-gray-900">Campus Sentinel</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Mobile Overlay -->
+  <div id="mobile-overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"></div>
+
+  <!-- Sidebar Nav Drawer -->
+  <aside id="sidebar-drawer" class="fixed left-0 top-0 h-screen w-64 border-r border-gray-200 bg-white transform -translate-x-full transition-transform duration-300 z-50 md:relative md:translate-x-0 flex flex-col justify-between p-6">
+    <div class="space-y-8 pt-4 md:pt-0">
+      <!-- Sidebar Header -->
+      <a href="{{ url_for('admin_dashboard') }}" class="flex items-center gap-2">
+        <svg class="w-7 h-7 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+        </svg>
+        <div>
+          <p class="font-bold text-base text-gray-900 leading-none">Campus Sentinel</p>
+          <p class="text-xs text-gray-500 mt-1">Admin Portal</p>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="space-y-1.5">
+        <a href="{{ url_for('admin_dashboard') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-smooth {% if request.path == url_for('admin_dashboard') %}bg-teal-600 text-white{% else %}text-gray-700 hover:bg-gray-100{% endif %}">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+          </svg>
+          Dashboard
+        </a>
+        <a href="{{ url_for('admin_heatmap') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-smooth {% if request.path == url_for('admin_heatmap') %}bg-teal-600 text-white{% else %}text-gray-700 hover:bg-gray-100{% endif %}">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+          </svg>
+          Campus Heatmap
+        </a>
+        <a href="{{ url_for('admin_prediction') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-smooth {% if request.path == url_for('admin_prediction') %}bg-teal-600 text-white{% else %}text-gray-700 hover:bg-gray-100{% endif %}">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+          </svg>
+          Disease Prediction
+        </a>
+        <a href="{{ url_for('admin_resources') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-smooth {% if request.path == url_for('admin_resources') %}bg-teal-600 text-white{% else %}text-gray-700 hover:bg-gray-100{% endif %}">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+          </svg>
+          Clinic Resources
+        </a>
+        <a href="{{ url_for('admin_reports') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-smooth {% if request.path == url_for('admin_reports') %}bg-teal-600 text-white{% else %}text-gray-700 hover:bg-gray-100{% endif %}">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+          </svg>
+          Student Reports
+        </a>
+      </nav>
+    </div>
+
+    <!-- Logout -->
+    <div>
+      <a href="{{ url_for('logout') }}" class="w-full block text-center px-4 py-2 border border-gray-300 rounded-lg text-xs font-semibold text-gray-700 hover:bg-gray-100 transition-smooth">
+        Logout
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main View Area -->
+  <div class="flex-1 flex flex-col overflow-hidden mt-16 md:mt-0">
+    <!-- Top Navigation Header -->
+    <header class="border-b border-gray-200 bg-white px-6 py-4 flex justify-between items-center">
+      <div>
+        <h2 class="text-lg font-semibold text-gray-900">Welcome back, {{ user_name }}</h2>
+        <p class="text-xs text-gray-500">Campus health analytics and administrative monitoring</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="p-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100 relative">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+          </svg>
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+        </button>
+        <button class="p-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+          </svg>
+        </button>
+        <div class="w-8 h-8 rounded-full bg-teal-100 text-teal-600 font-semibold flex items-center justify-center text-sm">
+          {{ user_name[0] }}
+        </div>
+      </div>
+    </header>
+
+    <!-- Scrollable Content Body -->
+    <main class="flex-1 overflow-auto p-4 md:p-6">
+      {% block admin_content %}{% endblock %}
+    </main>
+  </div>
+</div>
+{% endblock %}

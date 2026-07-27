@@ -1,0 +1,90 @@
+{% extends "admin/layout.html" %}
+
+{% block admin_content %}
+<div class="space-y-6 max-w-7xl">
+  <!-- Header -->
+  <div>
+    <h1 class="text-3xl font-bold text-gray-900">Student Symptom Reports</h1>
+    <p class="text-sm text-gray-500">All anonymous reports from student submissions</p>
+  </div>
+
+  <!-- Filter Card -->
+  <div class="p-4 bg-white border border-gray-200 rounded-xl shadow-sm flex flex-col md:flex-row gap-4 items-start md:items-center">
+    <div class="flex items-center gap-2 text-gray-500 font-medium text-sm">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+      </svg>
+      Filter Severity:
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <a href="{{ url_for('admin_reports', severity='Mild' if filter_severity != 'Mild' else None, status=filter_status) }}"
+         class="px-3 py-1.5 rounded-lg text-xs font-semibold border transition-smooth {% if filter_severity == 'Mild' %}bg-teal-600 text-white border-teal-600{% else %}bg-white text-gray-700 border-gray-300 hover:bg-gray-50{% endif %}">
+        Mild
+      </a>
+      <a href="{{ url_for('admin_reports', severity='Moderate' if filter_severity != 'Moderate' else None, status=filter_status) }}"
+         class="px-3 py-1.5 rounded-lg text-xs font-semibold border transition-smooth {% if filter_severity == 'Moderate' %}bg-teal-600 text-white border-teal-600{% else %}bg-white text-gray-700 border-gray-300 hover:bg-gray-50{% endif %}">
+        Moderate
+      </a>
+      <a href="{{ url_for('admin_reports', severity='High' if filter_severity != 'High' else None, status=filter_status) }}"
+         class="px-3 py-1.5 rounded-lg text-xs font-semibold border transition-smooth {% if filter_severity == 'High' %}bg-teal-600 text-white border-teal-600{% else %}bg-white text-gray-700 border-gray-300 hover:bg-gray-50{% endif %}">
+        High
+      </a>
+
+      <div class="border-l border-gray-300 mx-2 h-6"></div>
+
+      <span class="text-xs text-gray-500 font-medium my-auto">Status:</span>
+      <a href="{{ url_for('admin_reports', severity=filter_severity, status='Pending' if filter_status != 'Pending' else None) }}"
+         class="px-3 py-1.5 rounded-lg text-xs font-semibold border transition-smooth {% if filter_status == 'Pending' %}bg-teal-600 text-white border-teal-600{% else %}bg-white text-gray-700 border-gray-300 hover:bg-gray-50{% endif %}">
+        Pending
+      </a>
+      <a href="{{ url_for('admin_reports', severity=filter_severity, status='Reviewed' if filter_status != 'Reviewed' else None) }}"
+         class="px-3 py-1.5 rounded-lg text-xs font-semibold border transition-smooth {% if filter_status == 'Reviewed' %}bg-teal-600 text-white border-teal-600{% else %}bg-white text-gray-700 border-gray-300 hover:bg-gray-50{% endif %}">
+        Reviewed
+      </a>
+
+      {% if filter_severity or filter_status %}
+      <a href="{{ url_for('admin_reports') }}" class="px-3 py-1.5 text-xs text-red-600 hover:underline my-auto font-medium ml-2">
+        Clear Filters
+      </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Reports Table -->
+  <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-sm">
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left">
+        <thead class="border-b border-gray-200 text-gray-500 text-xs font-semibold uppercase bg-gray-50">
+          <tr>
+            <th class="py-3 px-4">Date/Time</th>
+            <th class="py-3 px-4">Symptoms</th>
+            <th class="py-3 px-4">Severity</th>
+            <th class="py-3 px-4">Zone</th>
+            <th class="py-3 px-4">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          {% for report in reports %}
+          <tr class="hover:bg-gray-50">
+            <td class="py-3.5 px-4 text-xs font-medium text-gray-600">{{ report.date }}</td>
+            <td class="py-3.5 px-4 text-gray-900 font-medium">{{ report.symptoms }}</td>
+            <td class="py-3.5 px-4">
+              <span class="text-xs px-2.5 py-1 rounded-full font-semibold {% if report.severity == 'Mild' %}bg-green-100 text-green-700{% elif report.severity == 'Moderate' %}bg-yellow-100 text-yellow-700{% else %}bg-red-100 text-red-700{% endif %}">
+                {{ report.severity }}
+              </span>
+            </td>
+            <td class="py-3.5 px-4 text-xs text-gray-600 font-medium">{{ report.zone }}</td>
+            <td class="py-3.5 px-4">
+              <span class="text-xs px-2.5 py-1 rounded-full font-semibold {% if report.status == 'Pending' %}bg-orange-100 text-orange-700{% else %}bg-blue-100 text-blue-700{% endif %}">
+                {{ report.status }}
+              </span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <p class="text-xs text-gray-500 mt-4">{{ reports|length }} reports shown</p>
+  </div>
+</div>
+{% endblock %}

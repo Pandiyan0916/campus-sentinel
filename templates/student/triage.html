@@ -1,0 +1,77 @@
+{% extends "student/layout.html" %}
+
+{% block student_content %}
+<div class="space-y-6 max-w-3xl">
+  <!-- Header -->
+  <div>
+    <h1 class="text-3xl font-bold text-gray-900">AI Triage Assistant</h1>
+    <p class="text-sm text-gray-500">Describe your symptoms for AI-powered health assessment</p>
+    {% if triage_result %}
+      <p class="text-xs text-teal-600 mt-1">AI confidence: {{ triage_result.confidence }}%</p>
+    {% endif %}
+  </div>
+
+  <!-- Input Card -->
+  <form method="POST" action="{{ url_for('student_triage') }}" class="p-6 bg-white border border-gray-200 rounded-xl shadow-sm space-y-4">
+    <label class="text-sm font-medium block text-gray-700">Describe Your Symptoms</label>
+    <textarea name="symptoms" rows="5" required
+              placeholder="e.g., I have a fever of 101°F, persistent cough for 2 days, and mild fatigue..."
+              class="w-full p-4 border border-gray-300 rounded-lg bg-gray-50 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+    <button type="submit" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg text-sm shadow transition-smooth">
+      Analyze with AI
+    </button>
+  </form>
+
+  <!-- Result Display Box -->
+  {% if triage_result %}
+  <div class="p-6 rounded-xl border shadow-md {{ triage_result.bg }} fade-in">
+    <div class="flex items-start gap-4 mb-4">
+      <div class="p-2 rounded-lg bg-white shadow-sm">
+        {% if triage_result.level == 'green' %}
+          <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        {% elif triage_result.level == 'yellow' %}
+          <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+          </svg>
+        {% elif triage_result.level == 'orange' %}
+          <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        {% else %}
+          <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+          </svg>
+        {% endif %}
+      </div>
+      <div>
+        <h3 class="text-2xl font-bold {{ triage_result.color }} mb-1">{{ triage_result.title }}</h3>
+        <p class="text-xs text-gray-600">Recommended action based on symptom analysis</p>
+        {% if triage_result.summary %}
+          <p class="text-xs text-gray-500 mt-2">{{ triage_result.summary }}</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="mt-4 space-y-2">
+      <p class="text-sm font-semibold text-gray-900 mb-2">Recommendations:</p>
+      <ul class="space-y-2 text-sm text-gray-800">
+        {% for rec in triage_result.recommendations %}
+        <li class="flex items-start gap-2">
+          <span class="text-teal-600 font-bold">•</span>
+          <span>{{ rec }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="mt-6 p-3 bg-white/70 rounded-lg text-xs text-gray-500 border border-gray-200">
+      <strong>Disclaimer:</strong> This assessment is AI-powered and not a substitute for professional medical diagnosis. Always consult with healthcare professionals for persistent symptoms.
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
