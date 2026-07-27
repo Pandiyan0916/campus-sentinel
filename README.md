@@ -101,6 +101,8 @@ This repo is ready for Railway deployment with the included `Procfile` and `runt
 
 Railway will automatically set the `PORT` environment variable, and the app listens on `0.0.0.0`.
 
+Website live at campus-sentinel-production.up.railway.app
+
 ---
 
 ## 🔑 Demo Credentials
