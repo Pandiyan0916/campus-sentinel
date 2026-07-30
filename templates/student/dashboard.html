@@ -74,7 +74,7 @@
             <span>{{ item.value }} cases</span>
           </div>
           <div class="w-full bg-gray-100 rounded-full h-3">
-            <div class="bg-blue-600 h-3 rounded-full bar-progress" style="width: {{ item.percent }}%;"></div>
+            <div class="bg-blue-600 h-3 rounded-full bar-progress" data-width="{{ item.percent }}"></div>
           </div>
         </div>
         {% endfor %}

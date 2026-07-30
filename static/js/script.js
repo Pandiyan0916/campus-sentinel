@@ -6,6 +6,16 @@ symptom selection helpers, and MedicBot asynchronous chat API calls.
 
 document.addEventListener('DOMContentLoaded', function () {
     // --------------------------------------------------
+    // Progress Bar Widths
+    // --------------------------------------------------
+    document.querySelectorAll('.bar-progress').forEach(function (bar) {
+        const width = bar.getAttribute('data-width');
+        if (width !== null) {
+            bar.style.width = width + '%';
+        }
+    });
+
+    // --------------------------------------------------
     // Mobile Sidebar Drawer Toggle
     // --------------------------------------------------
     const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');

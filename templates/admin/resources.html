@@ -75,7 +75,7 @@
             <span class="font-semibold text-gray-900">{{ bed.percent }}%</span>
           </div>
           <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
-            <div class="bg-gradient-to-r from-teal-500 to-blue-600 h-2.5 rounded-full" style="width: {{ bed.percent }}%;"></div>
+            <div class="bg-gradient-to-r from-teal-500 to-blue-600 h-2.5 rounded-full bar-progress" data-width="{{ bed.percent }}"></div>
           </div>
           <p class="text-xs text-gray-500 mt-2 font-medium">{{ bed.status }}</p>
         </div>

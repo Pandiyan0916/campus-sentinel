@@ -78,8 +78,24 @@ OUTBREAK_MODEL = LinearRegression().fit(OUTBREAK_X, OUTBREAK_Y)
 
 
 def analyze_symptoms(symptoms_text: str) -> dict:
-    """Return a classification result for symptom text using a local AI model."""
+    """Return a classification result for symptom text using a local AI model with keyword fallbacks."""
     sanitized = symptoms_text.strip().lower() if symptoms_text else 'no symptoms reported'
+
+    if any(term in sanitized for term in ['shortness of breath', 'chest pain', 'severe headache', 'confusion', 'vomiting']):
+        result = RECOMMENDATION_MAP['red'].copy()
+        result['confidence'] = 96
+        return result
+
+    if any(term in sanitized for term in ['high fever', 'persistent cough', '102f', '103f', '104f', 'fever of 100', 'fever of 101']):
+        result = RECOMMENDATION_MAP['orange'].copy()
+        result['confidence'] = 92
+        return result
+
+    if any(term in sanitized for term in ['fever', 'cough', 'sore throat', 'headache', 'fatigue']):
+        result = RECOMMENDATION_MAP['yellow'].copy()
+        result['confidence'] = 85
+        return result
+
     prediction = TRIAGE_PIPELINE.predict([sanitized])[0]
     proba = max(TRIAGE_PIPELINE.predict_proba([sanitized])[0])
     result = RECOMMENDATION_MAP.get(prediction, RECOMMENDATION_MAP['green']).copy()
